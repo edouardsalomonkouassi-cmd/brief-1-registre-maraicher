@@ -25,8 +25,7 @@ return 'Aucune opération enregistrée.'
 
 // Renvoie l'opération qui a cet identifiant, ou undefined si elle n'existe pas.
 export function trouverParId(operations, id) {
-
-  throw new Error('TODO : coder trouverParId dans src/registre.js');
+return operations.find((search)=> search.id === id);
 }
 
 // Contrôle une saisie AVANT de l'ajouter. Tous les champs arrivent sous forme de TEXTE :
