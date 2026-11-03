@@ -36,8 +36,27 @@ return operations.find((search)=> search.id === id);
 // obligatoires (n'importe quel texte non vide) · operation présente dans OPERATIONS
 // · coutFCFA nombre positif ou nul.
 export function verifierOperation(saisie, operations) {
+  const Erreur = []
+if (!saisie.id || operations.some((cal)=> cal.id === saisie.id)){
+  Erreur.push('Parcelle obligatoire')
+}
+if (!estDateValide(saisie.date)){
+  Erreur.push('Date invalide')
+}
+if (!saisie.culture.trim()){
+  Erreur.push('Culture obligatoire')
+}
+if (!OPERATIONS.includes(saisie.operation)){
+  Erreur.push("Type d'operation invalide.");
+}
+const cout = versNombre(saisie.coutFCFA);
 
-  throw new Error('TODO : coder verifierOperation dans src/registre.js');
+if(Number.isNaN(cout) || cout < 0){
+  Erreur.push("Cout invalide");
+}
+
+return Erreur;
+  //throw new Error('TODO : coder verifierOperation dans src/registre.js');
 }
 
 // Fabrique l'opération à enregistrer à partir d'une saisie VALIDE : coutFCFA devient un nombre.
