@@ -10,15 +10,18 @@ export const OPERATIONS = ['semis', 'arrosage', 'désherbage', 'repiquage', 'ré
 export function formaterOperation(operation) {
 return `${operation.id} | ${operation.date} | ${operation.parcelle} | ${operation.culture} | ${operation.operation} | ${operation.coutFCFA} FCFA`
 
-throw new Error('TODO : coder formaterOperation dans src/registre.js');
+//throw new Error('TODO : coder formaterOperation dans src/registre.js');
 }
 
 // Renvoie un texte avec une opération par ligne (lignes séparées par '\n'),
 // ou 'Aucune opération enregistrée.' si la liste est vide.
 export function listerOperations(operations) {
-
-throw new Error('TODO : coder listerOperations dans src/registre.js');
+if(!operations || operations.length === 0){
+return 'Aucune opération enregistrée.'
 }
+ return operations.map(formaterOperation).join('\n') 
+}
+
 
 // Renvoie l'opération qui a cet identifiant, ou undefined si elle n'existe pas.
 export function trouverParId(operations, id) {
