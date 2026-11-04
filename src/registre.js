@@ -37,14 +37,16 @@ return operations.find((search)=> search.id === id);
 // · coutFCFA nombre positif ou nul.
 export function verifierOperation(saisie, operations) {
   const Erreur = []
-if (!saisie.id || operations.some((cal)=> cal.id === saisie.id)){
-  Erreur.push('Parcelle obligatoire')
+if (saisie.id ===''){
+  Erreur.push('Id obligatoire')
+} else if(trouverParId(operations, saisie.id) !== undefined){
+ Erreur.push('Cet id est deja definit')
 }
 if (!estDateValide(saisie.date)){
-  Erreur.push('Date invalide')
+  Erreur.push('Date invalide, la date doit etre au format AAAA-MM-JJ');
 }
-if (!saisie.culture.trim()){
-  Erreur.push('Culture obligatoire')
+if (!saisie.culture === ""){
+  Erreur.push('ERREUR, Veillez entrer une culture')
 }
 if (!OPERATIONS.includes(saisie.operation)){
   Erreur.push("Type d'operation invalide.");
@@ -61,11 +63,25 @@ return Erreur;
 
 // Fabrique l'opération à enregistrer à partir d'une saisie VALIDE : coutFCFA devient un nombre.
 export function creerOperation(saisie) {
+  return{
+    id: saisie.id,
+    date: saisie.date,
+    parcelle : saisie.parcelle,
+    culture: saisie.culture,
+    operation: saisie.operation,
+    coutFCFA: versNombre(saisie.coutFCFA)
+  }
   throw new Error('TODO : coder creerOperation dans src/registre.js');
 }
 
 // Ajoute la saisie au registre si elle est valide (verifierOperation, puis creerOperation).
 // Renvoie les erreurs : [] si l'opération a été ajoutée ; sinon les messages, et rien n'est ajouté.
 export function ajouterOperation(operations, saisie) {
-  throw new Error('TODO : coder ajouterOperation dans src/registre.js');
+  const erreur = verifierOperation(saisie, operations)
+  if (erreur.length>0){
+    return erreur
+  }
+  operations.push(creerOperation(saisie));
+  return []
+  //throw new Error('TODO : coder ajouterOperation dans src/registre.js');
 }
