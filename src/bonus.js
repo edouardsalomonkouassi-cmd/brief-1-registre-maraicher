@@ -24,8 +24,27 @@ export function supprimerOperation(operations, id) {
 // Erreurs : identifiant introuvable · champ 'id' (non modifiable) · champ absent de CHAMPS_MODIFIABLES
 //           · valeur refusée par les règles de l'ajout.
 export function modifierOperation(operations, id, champ, valeur) {
-  throw new Error('TODO Bonus : coder modifierOperation dans src/bonus.js');
+  const operation = trouverParId(operations, id);
+  if (!operation) {
+    return [`Opération ${id} introuvable.`];
+  }
+  if (champ === 'id') {
+    return ["L'identifiant ne peut pas être modifié."];
+  }
+  if (!CHAMPS_MODIFIABLES.includes(champ)) {
+    return [`Le champ « ${champ} » ne peut pas être modifié.`];
+  }
+
+  const saisie = { ...operation, [champ]: valeur };
+  const erreurs = verifierOperation(saisie, operations.filter((element) => element !== operation));
+  if (erreurs.length > 0) {
+    return erreurs;
+  }
+
+  operation[champ] = champ === 'coutFCFA' ? versNombre(valeur) : valeur;
+  return [];
 }
+
 
 // Renvoie une COPIE triée par coût décroissant : la plus chère d'abord.
 export function trierParCoutDecroissant(operations) {
