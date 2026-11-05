@@ -10,7 +10,6 @@ export const OPERATIONS = ['semis', 'arrosage', 'désherbage', 'repiquage', 'ré
 export function formaterOperation(operation) {
 return `${operation.id} | ${operation.date} | ${operation.parcelle} | ${operation.culture} | ${operation.operation} | ${operation.coutFCFA} FCFA`
 
-//throw new Error('TODO : coder formaterOperation dans src/registre.js');
 }
 
 // Renvoie un texte avec une opération par ligne (lignes séparées par '\n'),
@@ -58,7 +57,6 @@ if(Number.isNaN(cout) || cout < 0){
 }
 
 return Erreur;
-  //throw new Error('TODO : coder verifierOperation dans src/registre.js');
 }
 
 // Fabrique l'opération à enregistrer à partir d'une saisie VALIDE : coutFCFA devient un nombre.
@@ -71,7 +69,6 @@ export function creerOperation(saisie) {
     operation: saisie.operation,
     coutFCFA: versNombre(saisie.coutFCFA)
   }
-  throw new Error('TODO : coder creerOperation dans src/registre.js');
 }
 
 // Ajoute la saisie au registre si elle est valide (verifierOperation, puis creerOperation).
@@ -83,5 +80,4 @@ export function ajouterOperation(operations, saisie) {
   }
   operations.push(creerOperation(saisie));
   return []
-  //throw new Error('TODO : coder ajouterOperation dans src/registre.js');
 }

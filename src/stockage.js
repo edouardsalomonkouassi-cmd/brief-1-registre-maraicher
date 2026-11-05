@@ -7,13 +7,10 @@ import { readFile, writeFile } from 'node:fs/promises';
 export async function chargerJson(chemin) {
   const charger = await readFile(chemin, "utf8");
   return JSON.parse(charger);
-  throw new Error('TODO : coder chargerJson dans src/stockage.js');
 }
 
 // Écrit le tableau dans le fichier, au format JSON indenté de 2 espaces.
 export async function enregistrerJson(chemin, enregistrements) {
   const ecrire = JSON.stringify(enregistrements, null, 2);
   await writeFile(chemin, ecrire, `utf8`);
-
-  //throw new Error('TODO : coder enregistrerJson dans src/stockage.js');
 }
