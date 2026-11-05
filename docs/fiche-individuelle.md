@@ -11,7 +11,7 @@
    Une saisie de coût est du texte et peut contenir des espaces ou une virgule. Le programme utilise `versNombre`, qui convertit les formats acceptés et renvoie `NaN` pour une valeur non numérique ou vide. La validation refuse ensuite les valeurs négatives ou invalides avant d'ajouter l'opération.
 
 3. **L'entraide**  
-   Je peux citer : KAMAGATE et Aucune entraide entre camarades n'a été documentée dans les éléments fournis. L'auteur doit compléter cette réponse si une personne l'a aidé ou s'il a aidé quelqu'un, en indiquant le sujet précis.
+   Je peux citer : KAMAGATE, CHECK Tidiane et mes condisciples du mini projet 1.
 
 **Note de préparation**
 
