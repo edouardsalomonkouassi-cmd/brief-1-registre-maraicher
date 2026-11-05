@@ -18,6 +18,8 @@ function afficherMenu() {
   console.log('3. Rechercher (identifiant, parcelle, culture)');
   console.log('4. Trier (coût, date)');
   console.log('5. Synthèse des dépenses');
+  console.log('6. Supprimer une opération');
+  console.log('7. Modifier une opération');
   console.log('0. Quitter');
 }
 
@@ -154,6 +156,55 @@ function afficherSynthese(operations) {
   console.log('Rappel : ce sont des dépenses. Sans les revenus, elles ne mesurent pas la rentabilité.');
 }
 
+async function supprimer(operations) {
+  const saisie = await demander('Identifiant : ');
+  if (saisie === null) return false;
+  const id = saisie.toUpperCase();
+  const precedent = operations.map((operation) => ({ ...operation }));
+  const operation = supprimerOperation(operations, id);
+  if (!operation) {
+    console.log(`Opération ${id} introuvable.`);
+    return true;
+  }
+  try {
+    await enregistrerJson(FICHIER_DONNEES, operations);
+  } catch (erreur) {
+    operations.splice(0, operations.length, ...precedent);
+    throw erreur;
+  }
+  console.log(`Opération ${id} supprimée. Le registre compte ${operations.length} opération(s).`);
+  return true;
+}
+
+async function modifier(operations) {
+  const saisieId = await demander('Identifiant : ');
+  if (saisieId === null) return false;
+  const id = saisieId.toUpperCase();
+  const champ = await demander('Champ à modifier (date, parcelle, culture, operation, coutFCFA) : ');
+  if (champ === null) return false;
+  const valeur = await demander('Nouvelle valeur : ');
+  if (valeur === null) return false;
+
+  const precedent = operations.map((operation) => ({ ...operation }));
+  const valeurNormalisee = champ === 'parcelle' ? valeur.toUpperCase()
+    : champ === 'culture' || champ === 'operation' ? valeur.toLowerCase()
+      : valeur;
+  const erreurs = modifierOperation(operations, id, champ, valeurNormalisee);
+  if (erreurs.length > 0) {
+    console.log('Modification refusée :');
+    afficherErreurs(erreurs);
+    return true;
+  }
+  try {
+    await enregistrerJson(FICHIER_DONNEES, operations);
+  } catch (erreur) {
+    operations.splice(0, operations.length, ...precedent);
+    throw erreur;
+  }
+  console.log(`Opération ${id} modifiée.`);
+  return true;
+}
+
 function messageErreur(erreur) {
   return erreur instanceof Error ? erreur.message : String(erreur);
 }
@@ -202,6 +253,16 @@ async function main() {
           case '5':
             afficherSynthese(operations);
             break;
+          case '6':
+            console.log('\n--- Supprimer une opération ---');
+            continuer = await supprimer(operations);
+            break;
+          case '7':
+            console.log('\n--- Modifier une opération ---');
+            continuer = await modifier(operations);
+            break;
+          default:
+            console.log(`Choix inconnu : « ${choix} ». Tapez un chiffre du menu.`);
         }
       } catch (erreur) {
         const message = messageErreur(erreur);
